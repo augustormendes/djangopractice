@@ -3,6 +3,7 @@ from model_utils.models import TimeStampedModel
 from autoslug import AutoSlugField
 from django_countries.fields import CountryField
 from django.urls import reverse
+from django.conf import settings
 # Create your models here.
 
 
@@ -19,7 +20,7 @@ class Cheese(TimeStampedModel):
         HARD = "hard", "Hard"
 
     firmness = models.CharField("Firmness",max_length=20,choices=Firmness.choices,default=Firmness.UNSPECIFIED)
-
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL,null=True,on_delete=models.SET_NULL) 
     def get_absolute_url(self):
         return reverse("cheeses:detail",kwargs={'slug':self.slug})
     def __str__(self):
